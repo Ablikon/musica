@@ -130,17 +130,36 @@ function App() {
   }, [])
 
   const currentLyricIndex = getCurrentLyric()
+  const prevLyricIndexRef = useRef(currentLyricIndex)
 
   // Автоскролл к активной строке
   useEffect(() => {
     const container = lyricsContainerRef.current
-    const activeLyric = container?.querySelector('.lyric.active')
+    if (!container) return
+    
+    // Проверяем, действительно ли индекс изменился
+    if (prevLyricIndexRef.current === currentLyricIndex) return
+    prevLyricIndexRef.current = currentLyricIndex
+    
+    const activeLyric = container.querySelector('.lyric-line.active')
     
     if (activeLyric) {
-      activeLyric.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      })
+      const containerRect = container.getBoundingClientRect()
+      const lyricRect = activeLyric.getBoundingClientRect()
+      
+      // Проверяем, нужна ли прокрутка (если элемент уже в видимой области)
+      const isInView = 
+        lyricRect.top >= containerRect.top + 100 &&
+        lyricRect.bottom <= containerRect.bottom - 100
+      
+      if (!isInView) {
+        const offset = lyricRect.top - containerRect.top - (containerRect.height / 2) + (lyricRect.height / 2)
+        
+        container.scrollTo({
+          top: container.scrollTop + offset,
+          behavior: 'smooth'
+        })
+      }
     }
   }, [currentLyricIndex])
 

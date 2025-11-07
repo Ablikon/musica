@@ -118,6 +118,8 @@
   padding: 2rem 1rem;
   margin: 0 -1rem;
   scroll-behavior: smooth;
+  scroll-padding: 50% 0;
+  overscroll-behavior: contain;
 }
 
 .lyric-line {
@@ -125,10 +127,12 @@
   font-weight: 600;
   color: rgba(255, 255, 255, 0.3);
   text-align: center;
-  margin: 2rem 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 2.5rem 0;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   line-height: 1.4;
   padding: 0 1rem;
+  opacity: 0.5;
+  will-change: transform, opacity, color;
 }
 
 .lyric-line.active {
@@ -136,11 +140,13 @@
   font-size: 2.2rem;
   transform: scale(1.05);
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  opacity: 1;
 }
 
 .lyric-line.past {
   color: rgba(255, 255, 255, 0.4);
   font-size: 1.6rem;
+  opacity: 0.6;
 }
 
 .player-controls {
@@ -181,7 +187,7 @@
   background: linear-gradient(90deg, #f8b4d9, #e91e63);
   border-radius: 3px;
   position: relative;
-  transition: width 0.1s linear;
+  transition: width 0.3s ease-out;
 }
 
 .progress-dot {
@@ -219,7 +225,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
   color: white;
 }
@@ -231,6 +237,7 @@
 
 .play-btn:active {
   transform: scale(0.95);
+  transition: all 0.1s ease;
 }
 
 .play-btn svg {
