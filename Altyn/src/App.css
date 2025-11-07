@@ -1,8 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
 .logo {
@@ -44,7 +48,10 @@
 .player-container {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  height: 100dvh; /* Динамическая высота для мобильных */
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -75,9 +82,9 @@
 .player-content {
   position: relative;
   z-index: 10;
-  width: 90%;
-  max-width: 600px;
+  width: min(90%, 600px);
   height: 85vh;
+  height: 85dvh;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(50px) saturate(180%);
   border-radius: 24px;
@@ -89,9 +96,10 @@
 
 .header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .title {
@@ -120,6 +128,8 @@
   scroll-behavior: smooth;
   scroll-padding: 50% 0;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 
 .lyric-line {
@@ -152,6 +162,7 @@
 .player-controls {
   margin-top: auto;
   padding-top: 1.5rem;
+  flex-shrink: 0;
 }
 
 .progress-section {
@@ -166,6 +177,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   min-width: 40px;
+  text-align: center;
 }
 
 .progress-bar {
@@ -176,6 +188,7 @@
   cursor: pointer;
   position: relative;
   transition: height 0.2s ease;
+  touch-action: none;
 }
 
 .progress-bar:hover {
@@ -228,6 +241,7 @@
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
   color: white;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .play-btn:hover {
@@ -301,27 +315,102 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* iPhone 14 Pro Max и подобные */
+@media (max-width: 430px) and (min-height: 900px) {
+  .player-content {
+    width: 92%;
+    height: 88vh;
+    height: 88dvh;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .lyrics-section {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .lyric-line {
+    font-size: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .lyric-line.active {
+    font-size: 1.875rem;
+  }
+
+  .lyric-line.past {
+    font-size: 1.375rem;
+  }
+
+  .play-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .play-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .progress-section {
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .time-label {
+    font-size: 0.8125rem;
+    min-width: 36px;
+  }
+}
+
+/* Стандартные телефоны */
 @media (max-width: 768px) {
   .player-content {
-    width: 95%;
+    width: 94%;
     height: 90vh;
+    height: 90dvh;
     padding: 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 1rem;
   }
 
   .title {
     font-size: 1.5rem;
   }
 
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .lyrics-section {
+    padding: 1.5rem 0.5rem;
+  }
+
   .lyric-line {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    margin: 1.75rem 0;
   }
 
   .lyric-line.active {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 
   .lyric-line.past {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
 
   .play-btn {
@@ -333,19 +422,97 @@
     width: 24px;
     height: 24px;
   }
+
+  .progress-section {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
 }
 
-@media (max-width: 480px) {
+/* Маленькие телефоны */
+@media (max-width: 375px) {
+  .player-content {
+    width: 96%;
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.375rem;
+  }
+
+  .lyric-line {
+    font-size: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .lyric-line.active {
+    font-size: 1.5rem;
+  }
+
+  .lyric-line.past {
+    font-size: 1.125rem;
+  }
+
+  .play-btn {
+    width: 52px;
+    height: 52px;
+  }
+
+  .play-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Ландшафтная ориентация на телефонах */
+@media (max-height: 500px) and (orientation: landscape) {
+  .player-content {
+    height: 95vh;
+    height: 95dvh;
+    padding: 1rem;
+  }
+
+  .header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.8125rem;
+  }
+
   .lyrics-section {
     padding: 1rem 0.5rem;
   }
 
   .lyric-line {
-    font-size: 1.3rem;
-    margin: 1.5rem 0;
+    font-size: 1.125rem;
+    margin: 1.25rem 0;
   }
 
   .lyric-line.active {
-    font-size: 1.6rem;
+    font-size: 1.375rem;
+  }
+
+  .play-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .play-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .progress-section {
+    margin-bottom: 0.875rem;
+  }
+
+  .player-controls {
+    padding-top: 1rem;
   }
 }

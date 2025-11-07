@@ -101,8 +101,16 @@ function App() {
 
   const handleSeek = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
-    const percent = (e.clientX - rect.left) / rect.width
+    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX
+    const percent = (clientX - rect.left) / rect.width
     audioRef.current.currentTime = percent * duration
+  }
+
+  const handleTouchSeek = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const touch = e.touches[0] || e.changedTouches[0]
+    const percent = (touch.clientX - rect.left) / rect.width
+    audioRef.current.currentTime = Math.max(0, Math.min(duration, percent * duration))
   }
 
   const formatTime = (time) => {
@@ -189,7 +197,12 @@ function App() {
         <div className="player-controls">
           <div className="progress-section">
             <span className="time-label">{formatTime(currentTime)}</span>
-            <div className="progress-bar" onClick={handleSeek}>
+            <div 
+              className="progress-bar" 
+              onClick={handleSeek}
+              onTouchStart={handleTouchSeek}
+              onTouchMove={handleTouchSeek}
+            >
               <div 
                 className="progress-fill" 
                 style={{ width: `${(currentTime / duration) * 100}%` }}
